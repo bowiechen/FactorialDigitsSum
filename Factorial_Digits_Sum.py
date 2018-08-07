@@ -39,25 +39,36 @@ def pretty_print(counter):
         raise TypeError('pretty_print can only accept type Counter!')
 
 
-def multicore_helper(init_val, end_val, digits, allow_zero):
+def brute_force(init_val, end_val, digits, allow_zero):
     counter = Counter(digits, init_val, allow_zero)
     while not counter.overflow and counter.get_value() < end_val:
         counter.increment()
         if lhs(counter) == rhs(counter):
             pretty_print(counter)
 
+
+def multicore_helper(init_val, end_val, digits, allow_zero, queue=None):
+    if queue is None:
+        brute_force(init_val, end_val, digits, allow_zero)
+    else:
+        queue.put(brute_force(init_val, end_val, digits, allow_zero))
+
 def multicore(digits, allow_zero, core_count=1):
     if core_count != int(core_count) or core_count <= 0:
-        raise ArgumentError('core_count cannot be negative!')
+        core_count = 1 # encountered invalid stuff
 
     if core_count > 1:
         print('TODO')
         print('[INFO] Using ' + str(core_count) + ' cores.')
         queue = Queue()
-        process_list = []
+        delta = int(pow(10, digits) / core_count)
+        lo = 0
+        hi = lo + delta
         for i in range(core_count):
-            process = Process(target=calculate)
-            process_list.append()
+            proc = Process(target=multicore_helper, args=(lo, hi, digits, allow_zero, queue))
+            proc.start()
+            lo = hi
+            hi += delta
     else:
         print('[INFO] Using ' + str(core_count) + ' core.')
         end_val = ''
@@ -69,7 +80,6 @@ def multicore(digits, allow_zero, core_count=1):
 
 def main():
     args = parser.parse_args()
-    
     multicore(args.digits, args.allow_zero, args.multicore)
 
 
@@ -77,5 +87,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('digits', type=int, default='5', help='how many digits to calculate')
     parser.add_argument('-z', '-0', '--allow_zero', help='allow zeros to be part of the calculation', action='store_true')
-    parser.add_argument('-m', '--multicore', type=int, default=1, help='how many cores to use')
+    parser.add_argument('-m', '--multicore', type=int, default=1, help='how many cores to use. if an invalid integer is given, \'1\' is used')
     main()
