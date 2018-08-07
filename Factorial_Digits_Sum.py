@@ -16,7 +16,7 @@ def rhs(counter):
             retval += fac(i)
         return retval
     else:
-        raise TypeError('lhs can only accept type Counter!')
+        raise TypeError('rhs can only accept type Counter!')
 
 
 def pretty_print(counter):
@@ -33,7 +33,7 @@ def pretty_print(counter):
         solution_str = solution_str[:-3]
         print(solution_str)
     else:
-        raise TypeError('lhs can only accept type Counter!')
+        raise TypeError('pretty_print can only accept type Counter!')
 
 
 
