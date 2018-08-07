@@ -11,5 +11,6 @@ usage: Factorial_Digits_Sum.py [-h] [-z] [-m MULTICORE] digits
 ```
 
 `-z`, `-0`, `--allow_zero` allow zeros to be part of the calculation
+
 `-m MULTICORE`, `--multicore MULTICORE` how many cores to use. if an invalid integer is given, '1' is used
 
