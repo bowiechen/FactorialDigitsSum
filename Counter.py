@@ -10,12 +10,9 @@ class Counter:
                 self.digits[counter] = int(value)
 
             self.digits.reverse()
-            print(self.digits)
             while len(self.digits) < count:
                 self.digits.append(0)
-                print(self.digits)
             self.digits.reverse()
-            print(self.digits)
         else:
             for i in range(count):
                 if zeros:
