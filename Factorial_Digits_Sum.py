@@ -1,6 +1,7 @@
 from math import factorial as fac
 import sys
 import argparse
+from multiprocessing import Process, Queue
 from Counter import Counter
 
 def lhs(counter):
@@ -38,17 +39,43 @@ def pretty_print(counter):
         raise TypeError('pretty_print can only accept type Counter!')
 
 
-def main():
-    args = parser.parse_args()
-    counter = Counter(args.digits, args.allow_zero)
-    while not counter.overflow:
+def multicore_helper(init_val, end_val, digits, allow_zero):
+    counter = Counter(digits, init_val, allow_zero)
+    while not counter.overflow and counter.get_value() < end_val:
         counter.increment()
         if lhs(counter) == rhs(counter):
             pretty_print(counter)
+
+def multicore(digits, allow_zero, core_count=1):
+    if core_count != int(core_count) or core_count <= 0:
+        raise ArgumentError('core_count cannot be negative!')
+
+    if core_count > 1:
+        print('TODO')
+        print('[INFO] Using ' + str(core_count) + ' cores.')
+        queue = Queue()
+        process_list = []
+        for i in range(core_count):
+            process = Process(target=calculate)
+            process_list.append()
+    else:
+        print('[INFO] Using ' + str(core_count) + ' core.')
+        end_val = ''
+        for i in range(digits):
+            end_val += str(9)
+        multicore_helper(0, int(end_val), digits, allow_zero)
+
+
+
+def main():
+    args = parser.parse_args()
+    
+    multicore(args.digits, args.allow_zero, args.multicore)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('digits', type=int, default='5', help='how many digits to calculate')
     parser.add_argument('-z', '-0', '--allow_zero', help='allow zeros to be part of the calculation', action='store_true')
+    parser.add_argument('-m', '--multicore', type=int, default=1, help='how many cores to use')
     main()
