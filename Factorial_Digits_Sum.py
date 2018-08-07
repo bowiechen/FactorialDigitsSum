@@ -1,8 +1,28 @@
-from math import factorial as fac
+# from math import factorial as fac
 import sys
 import argparse
 from multiprocessing import Process, Queue
 from Counter import Counter
+
+def fac(x):
+    if x == 0 or x == 1:
+        return 1
+    if x == 2:
+        return 2
+    if x == 3:
+        return 6
+    if x == 4:
+        return 24
+    if x == 5:
+        return 120
+    if x == 6:
+        return 720
+    if x == 7:
+        return 5040
+    if x == 8:
+        return 40320
+    if x == 9:
+        return 362880
 
 def lhs(counter):
     if isinstance(counter, Counter):
