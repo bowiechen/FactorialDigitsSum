@@ -2,10 +2,13 @@ class Counter:
     digits = []
     count = 0
     overflow = False
-    def __init__(self, count):
+    def __init__(self, count, zeros=True):
         self.count = count
         for i in range(count):
-            self.digits.append(0)
+            if zeros:
+                self.digits.append(0)
+            else:
+                self.digits.append(1)
 
     def increment(self):
         self.digits[len(self.digits)-1] += 1

@@ -1,5 +1,6 @@
 from math import factorial as fac
 import sys
+import argparse
 from Counter import Counter
 
 def lhs(counter):
@@ -21,6 +22,7 @@ def rhs(counter):
 
 def pretty_print(counter):
     if isinstance(counter, Counter):
+        # leading character should not be zero.
         if counter.get_list()[0] == 0:
             return
         print('=== SOLUTION ===')
@@ -36,18 +38,17 @@ def pretty_print(counter):
         raise TypeError('pretty_print can only accept type Counter!')
 
 
-
 def main():
-    if len(sys.argv) >= 2:
-        counter = Counter(int(sys.argv[1]))
-        while not counter.overflow:
-            counter.increment()
-            if lhs(counter) == rhs(counter):
-                pretty_print(counter)
-    else:
-        print('Missing argument!')
-
+    args = parser.parse_args()
+    counter = Counter(args.digits, args.allow_zero)
+    while not counter.overflow:
+        counter.increment()
+        if lhs(counter) == rhs(counter):
+            pretty_print(counter)
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('digits', type=int, default='5', help='how many digits to calculate')
+    parser.add_argument('-z', '-0', '--allow_zero', help='allow zeros to be part of the calculation', action='store_true')
     main()
