@@ -2,13 +2,26 @@ class Counter:
     digits = []
     count = 0
     overflow = False
-    def __init__(self, count, zeros=True):
+    def __init__(self, count, initial_value=0, zeros=True):
         self.count = count
-        for i in range(count):
-            if zeros:
+        if initial_value != 0:
+            self.digits = list(str(initial_value))
+            for counter, value in enumerate(self.digits):
+                self.digits[counter] = int(value)
+
+            self.digits.reverse()
+            print(self.digits)
+            while len(self.digits) < count:
                 self.digits.append(0)
-            else:
-                self.digits.append(1)
+                print(self.digits)
+            self.digits.reverse()
+            print(self.digits)
+        else:
+            for i in range(count):
+                if zeros:
+                    self.digits.append(0)
+                else:
+                    self.digits.append(1)
 
     def increment(self):
         self.digits[len(self.digits)-1] += 1
